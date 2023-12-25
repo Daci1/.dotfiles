@@ -1,0 +1,112 @@
+"" Source your .vimrc
+"source ~/.vimrc
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=10
+
+" Do incremental searching.
+set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+map Q <nop>
+
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+"Set ignore case when searching"
+set ignorecase
+
+"Keep vim modes when refactoring"
+set idearefactormode=keep
+
+"Smart line joining"
+set ideajoin
+
+" Find more examples here: https://jb.gg/share-ideavimrc
+set rnu
+
+"Set Leader Key"
+let mapleader = " "
+
+"Move half screen up/down always stays in the middle"
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+"Search result is always in the middle"
+nnoremap n nzz
+nnoremap N Nzz
+
+"No more bell noise"
+set belloff=all
+set vb t_vb=
+
+"Search Keymaps <leader>f + something"
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fc <Action>(SelectInProjectView)
+nmap <leader>fe <Action>(FindInPath)
+vmap <leader>fe <Action>(FindInPath)
+
+"Window manager <leader>w + something"
+nmap <leader>ws <C-w>s
+
+"split right
+nmap <leader>wV <C-w>v
+
+"split and move right
+nmap <leader>wv <Action>(MoveTabRight)
+nmap <leader>wm <Action>(MoveEditorToOppositeTabGroup)
+nmap <leader>wd <Action>(EditSourceInNewWindow)
+nmap <leader>h <C-w>h
+nmap <leader>j <C-w>j
+nmap <leader>k <C-w>k
+nmap <leader>l <C-w>l
+nmap <leader>s <Action>(Switcher)
+
+nmap <leader>n <Action>(NextTab)
+nmap <leader>b <Action>(PreviousTab)
+
+"Better Paste"
+xmap <leader>p "_dP
+
+"Move all selected up or down in visual"
+vmap J :m '>+1<CR>gv=gv
+vmap K :m '<-2<CR>gv=gv
+
+
+"Copy/Paste to system clipboard"
+nmap <leader>y "+y
+vmap <leader>y "+y
+
+nmap <leader>c "*y
+vmap <leader>c "*y
+
+nmap <leader>p "+p
+vmap <leader>p "+p
+
+"Delete without copying"
+nmap <leader>d "_d
+vmap <leader>d "_d
+
+"Map forward and backward (alt + [ or alt + ] ) to vim [ or ]"
+nmap [ <Action>(Back)
+nmap ] <Action>(Forward)
+
+"Map LSP commands"
+nmap gd <Action>(GotoDeclaration)
+nmap gi <Action>(GotoImplementation)
+nmap gt <Action>(GotoTypeDeclaration)
+nmap ga <Action>(ShowIntentionActions)
+vmap ga <Action>(ShowIntentionActions)
+nmap gr <Action>(Refactorings.QuickListPopupAction)
+vmap gr <Action>(Refactorings.QuickListPopupAction)
+nmap gb <Action>(ToggleLineBreakpoint)
