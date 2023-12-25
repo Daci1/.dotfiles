@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROJECTSDIR="$HOME/Desktop/Projects/"
+project=$(ls $PROJECTSDIR | fzf) || exit # if exit without a selection, exit script
+idea "$PROJECTSDIR/$project" > /dev/null 2>&1 &
