@@ -33,7 +33,7 @@ set idearefactormode=keep
 set ideajoin
 
 " Find more examples here: https://jb.gg/share-ideavimrc
-set rnu
+set nu rnu
 
 "Set Leader Key"
 let mapleader = " "
@@ -58,6 +58,9 @@ vmap <leader>fe <Action>(FindInPath)
 
 "Window manager <leader>w + something"
 nmap <leader>ws <C-w>s
+
+"Tab manager <leader>t + something"
+nmap <leader>tc <Action>(CloseAllEditorsButActive)
 
 "split right
 nmap <leader>wV <C-w>v
