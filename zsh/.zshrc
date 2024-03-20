@@ -1,7 +1,14 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -34,7 +41,6 @@ source $ZSH/oh-my-zsh.sh
 #Adds user custom binaries to PATH variable 
 export PATH=/Users/dacianbarbu/bin:${PATH}
 
-source /Users/dacianbarbu/.config/programming-languages/languages.sh
 
 
 # nvm
@@ -43,3 +49,16 @@ source /Users/dacianbarbu/.config/programming-languages/languages.sh
 
 #idea
 export PATH=/Applications/IntelliJ\ IDEA.app/Contents/MacOS:${PATH} 
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Source custom scripts
+
+source /Users/dacianbarbu/.config/programming-languages/languages.sh
+source "/Users/dacianbarbu/.sdkman/bin/sdkman-init.sh"
+source /Users/dacianbarbu/.dotfiles/zsh/hooks/hooks.sh
