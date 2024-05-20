@@ -69,10 +69,10 @@ nmap <leader>wV <C-w>v
 nmap <leader>wv <Action>(MoveTabRight)
 nmap <leader>wm <Action>(MoveEditorToOppositeTabGroup)
 nmap <leader>wd <Action>(EditSourceInNewWindow)
-nmap <leader>h <C-w>h
-nmap <leader>j <C-w>j
-nmap <leader>k <C-w>k
-nmap <leader>l <C-w>l
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
 nmap <leader>s <Action>(Switcher)
 
 nmap <leader>n <Action>(NextTab)
