@@ -52,6 +52,7 @@ set vb t_vb=
 
 "Search Keymaps <leader>f + something"
 nmap <leader>ff <Action>(GotoFile)
+vmap <leader>ff <Action>(SearchEverywhere)
 nmap <leader>fc <Action>(SelectInProjectView)
 nmap <leader>fe <Action>(FindInPath)
 vmap <leader>fe <Action>(FindInPath)
@@ -113,3 +114,6 @@ vmap ga <Action>(ShowIntentionActions)
 nmap gr <Action>(Refactorings.QuickListPopupAction)
 vmap gr <Action>(Refactorings.QuickListPopupAction)
 nmap gb <Action>(ToggleLineBreakpoint)
+
+"Toggle Jest Config Files"
+nmap <leader>tt <Action>(Tool_External Tools_Toggle Jest)
