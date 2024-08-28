@@ -50,4 +50,18 @@ require("lazy").setup({
 	{
 		'L3MON4D3/LuaSnip'
 	},
+	{ 'numToStr/Comment.nvim', opts = {} },
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"leoluz/nvim-dap-go", -- requires GOPATH to be set correctly and also 'delve' installed
+			"rcarriga/nvim-dap-ui",
+			"theHamsta/nvim-dap-virtual-text",
+            "nvim-neotest/nvim-nio",
+		}
+	},
+    {
+        'stevearc/dressing.nvim',
+        opts = {},
+    }
 })
