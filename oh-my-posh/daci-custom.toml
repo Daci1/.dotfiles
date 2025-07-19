@@ -1,0 +1,110 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 3
+final_space = true
+
+# does not work for fish yet
+[secondary_prompt]
+  template = '❯❯ '
+  foreground = 'magenta'
+  background = 'transparent'
+
+# If you ever want transient prompt uncomment this
+#[transient_prompt]
+#  template = '❯ '
+#  background = 'transparent'
+#  foreground_templates = ['{{if gt .Code 0}}red{{end}}', '{{if eq .Code 0}}magenta{{end}}']
+
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  #newline = true
+
+  [[blocks.segments]]
+    template = '{{ .Path }}'
+    foreground = 'blue'
+    background = 'transparent'
+    type = 'path'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      style = 'full'
+
+  [[blocks.segments]]
+    template = " ({{ if ge (len .HEAD) 40 }}{{ .HEAD | trunc 40 }}...{{ else }}{{ .HEAD }}{{ end }})"
+    foreground = 'p:grey'
+    background = 'transparent'
+    type = 'git'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      branch_icon = ''
+      cache_duration = 'none'
+      commit_icon = '@'
+      fetch_status = true
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+
+  [[blocks.segments]]
+    type = "command"
+    style = "plain"
+    foreground = "#ffffff"
+    template = "<green> {{ .Output }}</green>"
+
+    [blocks.segments.properties]
+    shell = "bash"
+    command = "~/.config/fish/custom-functions/display_node.sh"
+
+  [[blocks.segments]]
+    type = "command"
+    style = "plain"
+    foreground = "#ffffff"
+    template = "{{ if ne .Segment.Index 0 }} <white>|</white> {{end}}<cyan>  {{.Output}}</cyan>"
+
+    [blocks.segments.properties]
+    shell = "bash"
+    command = "~/.config/fish/custom-functions/display_terraform.sh"
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    template = '{{ if gt .Code 0 }}<red>❯</red>{{else}}<magenta>❯</magenta>{{end}}'
+    background = 'transparent'
+    foreground = 'magenta'
+    type = 'text'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+[[blocks]]
+  type = 'rprompt'
+  alignment = 'right'
+  #overflow = 'hidden'
+
+  [[blocks.segments]]
+    template = '{{ .FormattedMs }}'
+    foreground = 'yellow'
+    background = 'transparent'
+    type = 'executiontime'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      threshold = 1000
+
+
+[[tooltips]]
+type = "aws"
+tips = [ "aws", "terraform" ]
+style = "plain"
+foreground = "#e0af68"
+template = "{{if .Profile}} {{.Profile}}{{if .Region}}@{{.Region}}{{end}}{{end}}"
+    [tooltips.properties]
+    display_default = false
