@@ -117,3 +117,8 @@ nmap gb <Action>(ToggleLineBreakpoint)
 
 "Toggle Jest Config Files"
 nmap <leader>tt <Action>(Tool_External Tools_Toggle Jest)
+
+"Copilot"
+nmap <leader>aa <Action>(copilot.chat.show)
+nmap <leader>as <Action>(AIAssistant.Editor.AskAiAssistantInEditor)
+vmap <leader>as <Action>(AIAssistant.Editor.AskAiAssistantInEditor)
