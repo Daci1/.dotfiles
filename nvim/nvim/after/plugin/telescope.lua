@@ -3,6 +3,10 @@ vim.keymap.set('n', '<leader>ff', function()
 	builtin.find_files({hidden=true})
 end)
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-vim.keymap.set('n', '<leader>ps', function()
-	builtin.grep_string({ search = vim.fn.input("Grep > ")});
+vim.keymap.set('n', '<leader>fs', function()
+  local search_term = vim.fn.input("Grep > ")
+  builtin.grep_string({ 
+    search = search_term,
+    initial_mode = "normal",
+  });
 end)
