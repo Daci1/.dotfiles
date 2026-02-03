@@ -1,16 +1,51 @@
 local dap = require "dap"
-local dapui = require "dapui"
--- require("dapui").setup()
-dapui.setup()
+local dapui = require("dapui")
+local dapView = require("dap-view")
 require("dap-go").setup()
+
+dapView.setup({
+  winbar = {
+    default_section = "scopes",
+    controls = {
+      enabled = true,
+    },
+  },
+  windows = {
+      size = 0.25,
+      position = "below",
+      terminal = {
+          size = 0.5,
+          position = "right",
+      },
+  }
+})
+
+dapui.setup({
+  expand_lines = true,
+  floating = { border = "rounded" },
+  render = {
+    max_type_length = 0,
+  },
+  layouts = {
+    {
+      elements = {
+        { id = "scopes", size = 1.0 },
+      },
+      size = 15, 
+      position = "bottom",
+    },
+  },
+})
+
+local last_code_win = vim.api.nvim_get_current_win()
 
 vim.fn.sign_define('DapBreakpoint', { text='', texthl='DapBreakpoint', numhl='DapBreakpoint' })
 -- fixes all breakpoints getting highlighted as rejected (might cause problems but for now whatever does the trick i guess)
 vim.fn.sign_define('DapBreakpointRejected', {text = '', texthl = 'DapBreakpoint', numhl='DapBreakpoint'})
 
-vim.keymap.set("n", "<leader>dt", dapui.toggle, {noremap=true})
-vim.keymap.set("n", "<leader>dr", function() dapui.open({reset=true}) end, {noremap=true})
+vim.keymap.set("n", "<leader>dt", dapView.toggle, {noremap=true})
 vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
+vim.keymap.set('n', '<leader>dw', '<cmd>DapViewWatch<CR>', { desc = 'Add variable to watch' })
 vim.keymap.set("n", "<leader>?", function() 
 	dapui.eval(nil, { enter = true })
 end)
@@ -18,10 +53,15 @@ vim.keymap.set("n", '<F1>', dap.continue)
 
 
 dap.listeners.before.attach.dapui_config = function()
-    dapui.open()
+    dapView.open()
 end
 dap.listeners.before.launch.dapui_config = function()
-    dapui.open()
+    dapView.open()
+end
+dap.listeners.after.event_stopped["custom_jump"] = function(session, body)
+  if vim.api.nvim_win_is_valid(last_code_win) then
+    vim.api.nvim_set_current_win(last_code_win)
+  end
 end
 -- dap.listeners.before.event_terminated.dapui_config = function()
 --     dapui.close()
@@ -30,11 +70,6 @@ end
 --     dapui.close()
 -- end
 
--- require("dap-vscode-js").setup({
---     debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
---     adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
--- })
-
 local function get_nearest_test_name()
   local ts_utils = require("nvim-treesitter.ts_utils")
   local node = ts_utils.get_node_at_cursor()
@@ -42,7 +77,6 @@ local function get_nearest_test_name()
   while node do
     if node:type() == "call_expression" then
       local fn_node = node:child(0)
-
       local name = nil
 
       -- Case 1: plain it() / describe() / test()
@@ -60,13 +94,15 @@ local function get_nearest_test_name()
       if name == "it" or name == "test" or name == "describe" then
         local args = node:child(1)
         if args then
-          -- for .each, the real test name is inside the NEXT call
-          -- so we need to dive one level deeper
-          local first_arg = args:child(1)
+          local first_arg = args:child(1) -- first argument of the call
 
           if first_arg then
             local text = vim.treesitter.get_node_text(first_arg, 0)
-            return text:gsub("^['\"]", ""):gsub("['\"]$", "")
+            -- remove quotes
+            text = text:gsub("^[`'\"]", ""):gsub("[`'\"]$", "")
+            -- replace ${...} with .*
+            text = text:gsub("%${.-}", ".*")
+            return text
           end
         end
       end
@@ -77,6 +113,34 @@ local function get_nearest_test_name()
 
   return nil
 end
+
+local function get_jest_runtime_args(run_file_only)
+    local fname = vim.fn.expand("%") -- current file
+
+    -- Determine which Jest config to use
+    local jest_config = "jest.unit.config.ts"
+    if fname:match("integration%.test%.ts$") then
+        jest_config = "jest.integration.config.ts"
+    end
+
+    local args = {
+        fname,
+        "--runInBand",
+        "--config", jest_config,
+    }
+
+    -- Only get nearest test name if we're not running the whole file
+    if not run_file_only then
+        local test_name = get_nearest_test_name() or ""
+        if test_name ~= "" then
+            table.insert(args, "--testNamePattern=" .. test_name)
+        end
+    end
+
+    print("Running Jest with args:", table.concat(args, " "))
+    return args
+end
+
 
 local js_based_languages = {
   "typescript",
@@ -135,41 +199,13 @@ for _,language in ipairs(js_based_languages) do
   })
 
   table.insert(dap.configurations[language], {
-      type = "pwa-node",                -- DAP type for Node.js
-      request = "launch",               -- launch or attach
-      name = "Debug neaerest",        -- friendly name
-      runtimeExecutable = "${workspaceFolder}/node_modules/.bin/jest",        -- use npm
-      runtimeArgs = {
-          "${file}",
-          "--runInBand",
-          "--config", "jest.unit.config.ts",
-          "--testNamePattern=^PatchAssignmentService unit tests Patch assignment cases without compensation Given status is updated from .* to COMPLETED calls expected methods and returns something$",
-      }, -- npm script to run
-      cwd = "${workspaceFolder}",       -- working directory
-      console = "externalTerminal",  -- optional, if supported
-      -- internalConsoleOptions = "neverOpen", -- optional
-      env = {
-        NODE_OPTIONS = "--experimental-vm-modules",
-      },
-      sourceMaps = true                 -- enable source maps
-  })
-
-  table.insert(dap.configurations[language], {
       type = "pwa-node",
       request = "launch",
       name = "Debug Nearest Jest Test",
       cwd = "${workspaceFolder}",
       runtimeExecutable = "${workspaceFolder}/node_modules/.bin/jest",
       runtimeArgs = function()
-          local fname = vim.fn.expand("%") -- current file
-          local test_name = get_nearest_test_name() or ""
-          print(test_name)
-          return {
-              fname,
-              "--runInBand",
-              "--config", "jest.unit.config.ts",
-              "--testNamePattern=" .. test_name,
-          }
+          return get_jest_runtime_args(false)
       end,
       console = "externalTerminal",
       env = {
@@ -178,6 +214,21 @@ for _,language in ipairs(js_based_languages) do
       sourceMaps = true,
   })
 
+  table.insert(dap.configurations[language], {
+      type = "pwa-node",
+      request = "launch",
+      name = "Debug Jest File",
+      cwd = "${workspaceFolder}",
+      runtimeExecutable = "${workspaceFolder}/node_modules/.bin/jest",
+      runtimeArgs = function()
+          return get_jest_runtime_args(true)
+      end,
+      console = "externalTerminal",
+      env = {
+          NODE_OPTIONS = "--experimental-vm-modules",
+      },
+      sourceMaps = true,
+  })
 
 end
 

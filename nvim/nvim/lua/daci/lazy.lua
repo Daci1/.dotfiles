@@ -120,5 +120,11 @@ require("lazy").setup({
                 working_directory = nil,
             }
         end,
-    }
+    },
+    {
+        "igorlfs/nvim-dap-view",
+        ---@module 'dap-view'
+        ---@type dapview.Config
+        opts = {},
+    },
 })
