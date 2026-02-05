@@ -47,6 +47,9 @@ require("lazy").setup({
 	{
 		'hrsh7th/nvim-cmp'
 	},
+  {
+		'hrsh7th/cmp-cmdline'
+  },
 	{ 'numToStr/Comment.nvim', opts = {} },
 	{
 		"mfussenegger/nvim-dap",
@@ -126,5 +129,19 @@ require("lazy").setup({
         ---@module 'dap-view'
         ---@type dapview.Config
         opts = {},
+    },
+    {
+        'stevearc/conform.nvim',
+        opts = {},
+    },
+    {
+        "okuuva/auto-save.nvim",
+        version = '^1.0.0', -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
+        cmd = "ASToggle", -- optional for lazy loading on command
+        event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+        opts = {
+            -- your config goes here
+            -- or just leave it empty :)
+        },
     },
 })

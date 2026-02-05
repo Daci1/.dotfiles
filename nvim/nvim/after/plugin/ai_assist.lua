@@ -1,13 +1,25 @@
-require('copilot').setup({
-  suggestion = {
-    enabled = true,
-    auto_trigger = true,
-    debounce = 300,
+require("copilot").setup({
+	suggestion = {
+		enabled = true,
+		auto_trigger = true,
+		debounce = 300,
     keymap = {
-        accept = "<C-l>",
-        
-    }
-  }
+      accept = "<D-l>",
+    },
+	},
+})
+
+-- Dismiss copilot suggestions when typing
+vim.api.nvim_create_autocmd("InsertCharPre", {
+	callback = function()
+		require("copilot.suggestion").dismiss()
+	end,
+})
+
+require("avante_lib").load()
+require("avante").setup({
+	provider = "copilot",
+	mode = "legacy",
 })
 require('avante_lib').load()
 require('avante').setup({

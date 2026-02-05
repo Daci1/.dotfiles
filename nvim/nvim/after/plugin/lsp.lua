@@ -1,6 +1,5 @@
 local mason = require('mason')
 -- local mason_lspconfig = require('mason-lspconfig')
-local cmp = require('cmp')
 
 mason.setup()
 -- mason_lspconfig.setup({
@@ -26,29 +25,6 @@ end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
--- cmp.setup({
--- 	preselect = 'item',
--- 	completion = {
--- 		completeopt = 'menu,menuone,noinsert'
--- 	},
--- 	mapping = cmp.mapping.preset.insert({
--- 		['<CR>'] = cmp.mapping.confirm({select = false}),
--- 	}),
--- })
---
-cmp.setup({
-    preselect = 'item',
-    completion = {
-        completeopt = 'menu,menuone,noinsert'
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<CR>'] = cmp.mapping.confirm({select = false}),
-    }),
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp', max_item_count = 10 },
-    }),
-})
-
 vim.lsp.config('ts-server', {
     cmd = { "typescript-language-server", "--stdio" },
     filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "json" },
@@ -72,4 +48,13 @@ vim.lsp.config('jsonls', {
   capabilities = capabilities,
 })
 
-vim.lsp.enable({'ts-server', 'jsonls' })
+vim.lsp.config('terraform-ls', {
+  cmd = { "terraform-ls", "serve" },
+  filetypes = { "terraform", "tf" },
+  root_dir = vim.fs.root(0, { ".git", ".terraform-version" }),
+  on_attach = on_attach,
+  settings = {},
+  capabilities = capabilities,
+})
+
+vim.lsp.enable({'ts-server', 'jsonls', "terraform-ls" })
