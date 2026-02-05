@@ -1,0 +1,2 @@
+os:
+  edit: "nvim --server $NVIM_LISTEN_ADDRESS --remote {{filename}} && pkill lazygit"
