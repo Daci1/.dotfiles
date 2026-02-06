@@ -152,52 +152,6 @@ local js_based_languages = {
 for _,language in ipairs(js_based_languages) do
   dap.configurations[language] = dap.configurations[language] or {}
 
-  -- Launch configuration
-  table.insert(dap.configurations[language], {
-    type = "pwa-node",
-    request = "launch",
-    name = "Launch file",
-    program = "${file}",
-    cwd = "${workspaceFolder}",
-    sourceMaps = true,
-  })
-
-  -- Attach configuration with dynamic process picker
-  table.insert(dap.configurations[language], {
-    type = "pwa-node",
-    request = "attach",
-    name = "Attach to process",
-    processId = require("dap.utils").pick_process, -- pick running Node/TS process
-    cwd = "${workspaceFolder}",
-    sourceMaps = true,
-  })
-
-  table.insert(dap.configurations[language], {
-    type = "pwa-node",
-    request = "launch",
-    name = "Launch via npm",
-    runtimeExecutable = "npm",
-    runtimeArgs = { "run", "dev" }, 
-    cwd = "${workspaceFolder}",
-    sourceMaps = true,
-  })
-
-  table.insert(dap.configurations[language], {
-      type = "pwa-node",                -- DAP type for Node.js
-      request = "launch",               -- launch or attach
-      name = "Debug offline:ci",        -- friendly name
-      runtimeExecutable = "npm",        -- use npm
-      runtimeArgs = { "run", "offline:ci" }, -- npm script to run
-      cwd = "${workspaceFolder}",       -- working directory
-      console = "externalTerminal",  -- optional, if supported
-      -- internalConsoleOptions = "neverOpen", -- optional
-      -- env = {
-      --     NODE_ENV = "development",        -- environment variables
-      --     DACI_TEST = "test"
-      -- },
-      sourceMaps = true                 -- enable source maps
-  })
-
   table.insert(dap.configurations[language], {
       type = "pwa-node",
       request = "launch",
@@ -229,6 +183,31 @@ for _,language in ipairs(js_based_languages) do
       },
       sourceMaps = true,
   })
+
+  table.insert(dap.configurations[language], {
+      type = "pwa-node",                -- DAP type for Node.js
+      request = "launch",               -- launch or attach
+      name = "Debug offline:ci",        -- friendly name
+      runtimeExecutable = "npm",        -- use npm
+      runtimeArgs = { "run", "offline:ci" }, -- npm script to run
+      cwd = "${workspaceFolder}",       -- working directory
+      console = "externalTerminal",  -- optional, if supported
+      -- internalConsoleOptions = "neverOpen", -- optional
+      -- env = {
+      --     NODE_ENV = "development",        -- environment variables
+      --     DACI_TEST = "test"
+      -- },
+      sourceMaps = true                 -- enable source maps
+  })
+
+  -- Divider for the launch.json derived configs
+  table.insert(dap.configurations[language], {
+    name = "----- ↓ launch.json configs ↓ -----",
+    type = "",
+    request = "launch",
+  })
+
+
 
 end
 
