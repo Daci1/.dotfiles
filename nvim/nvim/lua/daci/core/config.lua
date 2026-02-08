@@ -28,3 +28,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window", buffer = true, silent = true })
 	end,
 })
+
+-- for nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
