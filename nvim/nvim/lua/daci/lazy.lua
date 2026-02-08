@@ -157,4 +157,13 @@ require("lazy").setup({
 			"nvim-tree/nvim-web-devicons",
 		},
 	},
+	{
+		"christopher-francisco/tmux-status.nvim",
+		lazy = true,
+		opts = {},
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		opts = {},
+	},
 })
