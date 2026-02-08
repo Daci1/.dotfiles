@@ -34,10 +34,6 @@ local on_attach = function(_, bufnr)
 		vim.lsp.buf.code_action()
 	end, opts)
 
-	vim.keymap.set("v", "ga", function()
-		vim.lsp.buf.code_action()
-	end, opts)
-
 	vim.keymap.set("n", "gr", function()
 		vim.lsp.buf.rename()
 	end, opts)
