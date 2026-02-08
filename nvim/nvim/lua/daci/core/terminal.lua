@@ -1,7 +1,11 @@
 vim.keymap.set("n", "<leader>lg", function()
-	vim.cmd("term lazygit")
-	vim.cmd.startinsert()
-end, { desc = "", noremap = true, silent = true })
+	local addr = vim.v.servername
+
+	-- Build tmux command
+	local cmd = string.format("tmux new-window -e NVIM_LISTEN_ADDRESS=%s lazygit", addr)
+
+	vim.fn.system(cmd)
+end, { desc = "Open lazygit in new tmux window with NVIM_LISTEN_ADDRESS" })
 
 vim.api.nvim_create_autocmd("TermClose", {
 	pattern = "term://*lazygit*",
@@ -29,7 +33,7 @@ vim.keymap.set({ "n", "t" }, "<C-t>", function()
 		vim.cmd.wincmd("J") -- move to bottom
 		vim.api.nvim_win_set_height(win, 15)
 		vim.g.toggle_term_win = win
-    vim.cmd.startinsert()
+		vim.cmd.startinsert()
 		vim.opt.number = false
 		vim.opt.relativenumber = false
 		return
@@ -38,7 +42,7 @@ vim.keymap.set({ "n", "t" }, "<C-t>", function()
 	-- Create new vertical terminal
 	vim.cmd.vnew()
 	vim.cmd.term()
-  vim.cmd.startinsert()
+	vim.cmd.startinsert()
 	vim.cmd.wincmd("J") -- move to bottom
 	vim.opt.number = false
 	vim.opt.relativenumber = false
