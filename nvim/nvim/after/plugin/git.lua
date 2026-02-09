@@ -10,7 +10,8 @@ vim.keymap.set("n", "<leader>gd", function()
 	if git_diff_open then
 		-- Close diff
 		vim.cmd("diffoff")
-		vim.cmd("wincmd o")
+		vim.cmd("wincmd h")
+		vim.cmd("close")
 		git_diff_open = false
 	else
 		-- Open diff
