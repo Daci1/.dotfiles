@@ -22,12 +22,47 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
 
 -- Open files under cursor with gx
 vim.keymap.set("n", "gx", function()
-	local file = vim.fn.expand("<cfile>")
+	-- Grab the entire WORD under cursor, including colons
+	local cword = vim.fn.expand("<cWORD>")
 
-	if vim.fn.filereadable(file) == 1 then
-		vim.cmd("edit " .. file)
+	-- Strip surrounding parentheses, e.g. (file:line:col)
+	local cfile = cword:match("^%((.*)%)$") or cword
+
+	-- Try to extract file:line:col
+	local file, line, col = cfile:match("([^:]+):(%d+):?(%d*)")
+
+	-- Prefer parsed file if it exists, otherwise raw cfile
+	local target = file or cfile
+
+	if vim.fn.filereadable(target) == 1 then
+		-- Find leftmost window that is NOT nvim-tree
+		local target_win = nil
+		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+			local buf = vim.api.nvim_win_get_buf(win)
+			if vim.bo[buf].filetype ~= "NvimTree" then
+				target_win = win
+				break
+			end
+		end
+
+		-- If we found a suitable window, switch to it
+		if target_win then
+			vim.api.nvim_set_current_win(target_win)
+		end
+
+		-- Open file
+		vim.cmd("edit " .. target)
+
+		-- If we had a line number, jump to it
+		if line then
+			vim.cmd(line)
+
+			-- Optional column jump
+			if col and col ~= "" then
+				vim.cmd("normal! " .. col .. "|")
+			end
+		end
 	else
-		-- fall back to default gx behavior (URLs etc)
-		vim.ui.open(file)
+		vim.ui.open(cfile)
 	end
 end, { noremap = true, silent = true })
