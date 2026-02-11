@@ -29,13 +29,17 @@ cmp.setup.cmdline("/", {
 
 cmp.setup.cmdline(":", {
 	mapping = cmp.mapping.preset.cmdline({
-		["<S-CR>"] = cmp.mapping(function(fallback)
+		["<Down>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
+		["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+
+		-- Confirm with Tab
+		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
-				cmp.confirm({ select = false })
+				cmp.confirm({ select = true }) -- true to select the currently highlighted item
 			else
-				fallback() -- Fall back to normal <S-CR> behavior if cmp is not visible
+				fallback() -- default Tab behavior if cmp menu is not visible
 			end
-		end, { "i", "c" }), -- Ensure this works in both insert and cmdline modes
+		end, { "i", "c" }),
 	}),
 	sources = cmp.config.sources({
 		{ name = "path" },
