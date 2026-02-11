@@ -1,4 +1,15 @@
+local function my_on_attach(bufnr)
+	local api = require("nvim-tree.api")
+
+	-- OR use all default mappings
+	api.config.mappings.default_on_attach(bufnr)
+
+	-- remove a default
+	vim.keymap.del("n", "<C-t>", { buffer = bufnr })
+end
+
 require("nvim-tree").setup({
+	on_attach = my_on_attach,
 	sort = {
 		sorter = "case_sensitive",
 	},
@@ -14,7 +25,7 @@ require("nvim-tree").setup({
 			".esbuild",
 			".git",
 			".idea",
-			".serverless",
+			"\\.serverless",
 			"artifacts",
 			"dist",
 			"*.iml",
