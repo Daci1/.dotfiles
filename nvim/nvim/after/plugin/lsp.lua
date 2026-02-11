@@ -18,9 +18,9 @@ local on_attach = function(_, bufnr)
 		vim.lsp.buf.definition()
 	end, opts)
 
-	vim.keymap.set("n", "gu", function()
-		require("telescope.builtin").lsp_references({ initial_mode = "normal" })
-	end, opts)
+	vim.keymap.set("n", "gD", ":Trouble diagnostics<CR>", opts)
+
+	vim.keymap.set("n", "gu", ":Trouble lsp_references<CR>", opts)
 
 	vim.keymap.set("n", "gi", function()
 		vim.lsp.buf.implementation()

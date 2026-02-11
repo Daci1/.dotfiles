@@ -166,4 +166,20 @@ require("lazy").setup({
 		"nvim-lualine/lualine.nvim",
 		opts = {},
 	},
+	{
+		"folke/trouble.nvim",
+		opts = {
+			auto_preview = false,
+			auto_close = true,
+			focus = true,
+			win = {
+				type = "float",
+			},
+			keys = {
+				["<esc>"] = "close",
+				["<cr>"] = "jump_close",
+			},
+		}, -- for default options, refer to the configuration section for custom setup.
+		cmd = "Trouble",
+	},
 })
