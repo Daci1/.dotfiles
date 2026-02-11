@@ -54,6 +54,40 @@ vim.lsp.config("ts-server", {
 	capabilities = capabilities,
 })
 
+vim.lsp.config("eslint", {
+	cmd = { "vscode-eslint-language-server", "--stdio" },
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"javascript.jsx",
+		"typescript",
+		"typescriptreact",
+		"typescript.tsx",
+		"vue",
+		"svelte",
+		"astro",
+		"htmlangular",
+	},
+	workspace_required = true,
+	on_attach = function(client, bufnr)
+		vim.api.nvim_buf_create_user_command(bufnr, "LspEslintFixAll", function()
+			client:request_sync("workspace/executeCommand", {
+				command = "eslint.applyAllFixes",
+				arguments = {
+					{
+						uri = vim.uri_from_bufnr(bufnr),
+						version = lsp.util.buf_versions[bufnr],
+					},
+				},
+			}, nil, bufnr)
+		end, {})
+		on_attach()
+	end,
+	root_dir = vim.fs.root(0, { "tsconfig.json", "package.json", ".git" }),
+	settings = {},
+	capabilities = capabilities,
+})
+
 vim.lsp.config("jsonls", {
 	cmd = { "npx", "vscode-json-languageserver", "--stdio" },
 	filetypes = { "json", "jsonc" },
@@ -77,4 +111,9 @@ vim.lsp.config("terraform-ls", {
 	capabilities = capabilities,
 })
 
-vim.lsp.enable({ "ts-server", "jsonls", "terraform-ls" })
+vim.lsp.enable({
+	"ts-server",
+	"eslint",
+	"jsonls",
+	"terraform-ls",
+})
