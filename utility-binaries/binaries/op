@@ -1,5 +1,12 @@
 #!/bin/bash
 
-PROJECTSDIR="$HOME/Desktop/Projects/"
-project=$(ls $PROJECTSDIR | fzf) || exit # if exit without a selection, exit script
-idea "$PROJECTSDIR/$project" > /dev/null 2>&1 &
+PROJECTSDIR="$HOME/Desktop/Projects"
+
+project=$(ls -d "$PROJECTSDIR"/*/ 2>/dev/null | xargs -n 1 basename | fzf) || exit
+project_path="$PROJECTSDIR/$project"
+
+if tmux has-session -t "$project" 2>/dev/null; then
+    tmux attach-session -t "$project"
+else
+    tmux new-session -s "$project" -c "$project_path" "nvim ."
+fi
