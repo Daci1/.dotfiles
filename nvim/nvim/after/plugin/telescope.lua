@@ -7,6 +7,7 @@ local ignore_dirs = {
 	"artifacts",
 	"dist",
 	"node_modules",
+	"**/node_modules",
 	".cache",
 	".DS_Store",
 	"**/.terraform", -- ignore all .terraform folders recursively
