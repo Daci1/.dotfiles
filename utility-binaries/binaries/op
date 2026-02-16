@@ -4,9 +4,14 @@ PROJECTSDIR="$HOME/Desktop/Projects"
 
 project=$(ls -d "$PROJECTSDIR"/*/ 2>/dev/null | xargs -n 1 basename | fzf) || exit
 project_path="$PROJECTSDIR/$project"
+#
+# Set Ghostty tab title
+printf "\033]0;%s\007" "$project"
 
 if tmux has-session -t "$project" 2>/dev/null; then
-    tmux attach-session -t "$project"
+  tmux attach-session -t "$project"
 else
-    tmux new-session -s "$project" -c "$project_path" "nvim ."
+  tmux new-session -d -s "$project" -c "$project_path"
+  tmux send-keys -t "$project" "nvim ." C-m
+  tmux attach-session -t "$project"
 fi
