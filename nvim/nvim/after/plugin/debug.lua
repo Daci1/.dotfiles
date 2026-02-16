@@ -119,7 +119,9 @@ local function get_jest_runtime_args(run_file_only)
 
 	-- Determine which Jest config to use
 	local jest_config = "jest.unit.config.ts"
-	if fname:match("integration%.test%.ts$") then
+	if fname:match("acceptance%.test%.ts$") then
+		jest_config = "jest.acceptance.config.ts"
+	elseif fname:match("integration%.test%.ts$") then
 		jest_config = "jest.integration.config.ts"
 	end
 
