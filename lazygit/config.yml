@@ -1,2 +1,6 @@
 os:
   edit: "nvim --server $NVIM_LISTEN_ADDRESS --remote {{filename}}; tmux kill-window"
+git:
+  commitPrefix:
+    - pattern: "^(?:[^/]+/)?([^-]+-[^-]+)-.*"
+      replace: '$1: '
