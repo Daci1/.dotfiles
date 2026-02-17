@@ -23,7 +23,7 @@ require("nvim-tree").setup({
 		dotfiles = false,
 		custom = {
 			".esbuild",
-			".git",
+			"\\.git",
 			".idea",
 			"\\.serverless",
 			"artifacts",

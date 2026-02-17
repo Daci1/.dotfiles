@@ -182,4 +182,5 @@ require("lazy").setup({
 		}, -- for default options, refer to the configuration section for custom setup.
 		cmd = "Trouble",
 	},
+	{ "petertriho/nvim-scrollbar" },
 })
