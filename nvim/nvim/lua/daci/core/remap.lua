@@ -66,3 +66,22 @@ vim.keymap.set("n", "gx", function()
 		vim.ui.open(cfile)
 	end
 end, { noremap = true, silent = true })
+
+-- Nice autoclosing
+vim.api.nvim_set_keymap("i", '" ', '""<Left>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "' ", "''<Left>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "` ", "``<Left>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("i", "< ", "<><Left>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("i", "( ", "()<Left>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "(<CR>", "(<CR>)<ESC>O", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "(;<CR>", "(<CR>);<ESC>O", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("i", "[ ", "[]<Left>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "[<CR>", "[<CR>]<ESC>O", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "[;<CR>", "[<CR>];<ESC>O", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("i", "{ ", "{}<Left>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "{<CR>", "{<CR>}<ESC>O", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "{;<CR>", "{<CR>};<ESC>O", { noremap = true, silent = true })
