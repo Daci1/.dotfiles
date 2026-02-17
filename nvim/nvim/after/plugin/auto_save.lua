@@ -1,7 +1,7 @@
 require("auto-save").setup({
 	enabled = true,
 	noautocmd = false,
-	debounce_delay = 500,
+	debounce_delay = 1500,
 })
 
 require("conform").setup({
