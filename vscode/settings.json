@@ -1,0 +1,82 @@
+{
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.layoutControl.enabled": false,
+    "window.commandCenter": false,
+    "git.untrackedChanges": "separate",
+    "go.goroot": "",
+    "typescript.preferences.includePackageJsonAutoImports": "on",
+    "[jsonc]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace"
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
+    "redhat.telemetry.enabled": false,
+    // VIM
+    "editor.lineNumbers": "relative",
+    "vim.incsearch": true,
+    "vim.surround": true,
+    "vim.ignorecase": true,
+    "vim.leader": " ",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        { "before": ["Q"], "after": [] },
+        //"Move half screen up/down always stays in the middle"
+        { "before": ["<C-d>"], "after": ["<C-d>", "z", "z"] },
+        { "before": ["<C-u>"], "after": ["<C-u>", "z", "z"] },
+        // "Search result is always in the middle"
+        { "before": ["n"], "after": ["n", "z", "z"] },
+        { "before": ["N"], "after": ["N", "z", "z"] },
+        // "Search Keymaps, <leader>f + something"
+        { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "f", "c"], "commands": ["revealInExplorer"] },
+        { "before": ["<leader>", "f", "e"], "commands": ["workbench.action.findInFiles"] },
+        // "Copy/Paste to system clipboard"
+        { "before": ["<leader>", "y"], "after": ["\"", "+", "y"] },
+        { "before": ["<leader>", "c"], "after": ["\"", "+", "y"] },
+        { "before": ["<leader>", "p"], "after": ["\"", "+", "p"] },
+        { "before": ["<leader>", "d"], "after": ["\"", "_", "d"] },
+        // "Tab manager <leader>t + something"
+        { "before": ["<leader>", "t", "c"], "commands": ["workbench.action.closeOtherEditors"] },
+        // "splits and movement of tabs"
+        { "before": ["<leader>", "w", "V"], "commands": ["workbench.action.splitEditorRight"] },
+        { "before": ["<leader>", "w", "v"], "commands": ["workbench.action.moveEditorToNextGroup"] },
+        { "before": ["<leader>", "w", "l"], "commands": ["workbench.action.moveEditorToNextGroup"] },
+        { "before": ["<leader>", "w", "h"], "commands": ["workbench.action.moveEditorToPreviousGroup"] },
+        { "before": ["<leader>", "w", "d"], "commands": ["workbench.action.moveEditorToNewWindow"] },
+        { "before": ["<C-h>"], "commands": ["workbench.action.focusLeftGroup"] },
+        { "before": ["<C-j>"], "commands": ["workbench.action.focusBelowGroup"] },
+        { "before": ["<C-k>"], "commands": ["workbench.action.focusAboveGroup"] },
+        { "before": ["<C-l>"], "commands": ["workbench.action.focusRightGroup"] },
+        { "before": ["<leader>", "n"], "commands": ["workbench.action.nextEditor"] },
+        { "before": ["<leader>", "b"], "commands": ["workbench.action.previousEditor"] },
+        // "Map forward and backward (alt + [ or alt + ] ) to vim [ or ]"
+        { "before": ["["], "commands": ["workbench.action.navigateBack"] },
+        { "before": ["]"], "commands": ["workbench.action.navigateForward"] },
+        // "LSP actions"
+        { "before": ["g", "d"], "commands": ["editor.action.goToDeclaration"] },
+        { "before": ["g", "i"], "commands": ["editor.action.goToImplementation"] },
+        { "before": ["g", "t"], "commands": ["editor.action.goToTypeDefinition"] },
+        { "before": ["g", "a"], "commands": ["editor.action.quickFix"] },
+        { "before": ["g", "r"], "commands": ["editor.action.refactor"] },
+        { "before": ["g", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] }
+
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "f", "e"], "commands": ["workbench.action.findInFiles"] },
+        //" Copy/Paste to system clipboard" 
+        { "before": ["<leader>", "y"], "after": ["\"", "+", "y"] },
+        { "before": ["<leader>", "c"], "after": ["\"", "+", "y"] },
+        { "before": ["<leader>", "p"], "after": ["\"", "+", "p"] },
+        { "before": ["<leader>", "d"], "after": ["\"", "_", "d"] },
+        // "LSP actions"
+        { "before": ["g", "a"], "commands": ["editor.action.quickFix"] },
+        { "before": ["g", "r"], "commands": ["editor.action.refactor"] }
+    ]
+}
