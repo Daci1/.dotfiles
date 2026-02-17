@@ -1,15 +1,6 @@
 local mason = require("mason")
--- local mason_lspconfig = require('mason-lspconfig')
 
 mason.setup()
--- mason_lspconfig.setup({
---   ensure_installed = {
---     "ts_ls",
---     "bashls",
---     "gopls",
---   },
---   automatic_installation = true,
--- })
 
 local on_attach = function(_, bufnr)
 	local opts = { buffer = bufnr, silent = true }

@@ -35,9 +35,6 @@ require("lazy").setup({
 		"williamboman/mason.nvim",
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
-	},
-	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v3.x",
 		enabled = false,
