@@ -50,7 +50,7 @@ vim.keymap.set("n", "<leader>dw", "<cmd>DapViewWatch<CR>", { desc = "Add variabl
 vim.keymap.set("n", "<leader>?", function()
 	dapui.eval(nil, { enter = true })
 end)
-vim.keymap.set("n", "<F1>", dap.continue)
+vim.keymap.set("n", "<leader>dc", dap.continue, { noremap = true })
 
 dap.listeners.before.attach.dapui_config = function()
 	dapView.open()
