@@ -32,3 +32,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- for nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- Automatically reload files changed outside of Neovim
+vim.o.autoread = true
+vim.o.updatetime = 750
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	pattern = "*",
+	command = "checktime",
+})
