@@ -95,11 +95,18 @@ vim.lsp.config("jsonls", {
 
 vim.lsp.config("terraform-ls", {
 	cmd = { "terraform-ls", "serve" },
-	filetypes = { "terraform", "tf" },
+	filetypes = { "terraform" },
 	root_dir = vim.fs.root(0, { ".git", ".terraform-version" }),
 	on_attach = on_attach,
 	settings = {},
 	capabilities = capabilities,
+})
+
+vim.filetype.add({
+	extension = {
+		tf = "terraform",
+		tfvars = "terraform",
+	},
 })
 
 vim.lsp.enable({
