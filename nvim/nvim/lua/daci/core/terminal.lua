@@ -52,12 +52,12 @@ vim.keymap.set({ "n", "t" }, "<C-t>", function()
 	-- Save window and buffer ID
 	vim.g.toggle_term_win = win
 	vim.g.toggle_term_buf = vim.api.nvim_win_get_buf(win)
-
-	vim.api.nvim_buf_set_keymap(
-		vim.g.toggle_term_buf,
-		"t",
-		"<Esc>",
-		"<C-\\><C-n>",
-		{ desc = "Only set <Esc> for this terminal buffer", noremap = true, silent = true }
-	)
 end, { desc = "Toggle bottom terminal with persistence", noremap = true, silent = true })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { buffer = true, silent = true })
+		end
+	end,
+})

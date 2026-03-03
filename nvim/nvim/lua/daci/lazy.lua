@@ -22,38 +22,21 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 	},
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-	},
-	{
-		"mbbill/undotree",
-	},
-	{
-		"tpope/vim-fugitive",
-	},
-	{
-		"lewis6991/gitsigns.nvim",
-	},
-	{
-		"williamboman/mason.nvim",
-	},
+	{ "nvim-treesitter/nvim-treesitter-context" },
+	{ "mbbill/undotree" },
+	{ "tpope/vim-fugitive" },
+	{ "lewis6991/gitsigns.nvim" },
+	{ "williamboman/mason.nvim" },
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v3.x",
 		enabled = false,
 	},
-	{
-		"neovim/nvim-lspconfig",
-	},
-	{
-		"hrsh7th/cmp-nvim-lsp",
-	},
-	{
-		"hrsh7th/nvim-cmp",
-	},
-	{
-		"hrsh7th/cmp-cmdline",
-	},
+	{ "neovim/nvim-lspconfig" },
+	{ "hrsh7th/cmp-nvim-lsp" },
+	{ "hrsh7th/nvim-cmp" },
+	{ "hrsh7th/cmp-cmdline" },
+	{ "rcarriga/cmp-dap" },
 	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		"mfussenegger/nvim-dap",
@@ -74,30 +57,7 @@ require("lazy").setup({
 			},
 		},
 	},
-	{
-		"stevearc/dressing.nvim",
-		opts = {},
-	},
-	{
-		"yetone/avante.nvim",
-		build = "make",
-		event = "VeryLazy",
-		version = false, -- Never set this value to "*"! Never!
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			"zbirenbaum/copilot.lua", -- for providers='copilot'
-			{
-				-- Make sure to set this up properly if you have lazy=true
-				"MeanderingProgrammer/render-markdown.nvim",
-				opts = {
-					file_types = { "markdown", "Avante" },
-				},
-				ft = { "markdown", "Avante" },
-			},
-		},
-	},
+	{ "stevearc/dressing.nvim", opts = {} },
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
@@ -106,9 +66,9 @@ require("lazy").setup({
 		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
 		},
 	},
+	{ "zbirenbaum/copilot.lua" },
 	{
 		"klen/nvim-test",
 		config = function()
@@ -129,16 +89,8 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{
-		"igorlfs/nvim-dap-view",
-		---@module 'dap-view'
-		---@type dapview.Config
-		opts = {},
-	},
-	{
-		"stevearc/conform.nvim",
-		opts = {},
-	},
+	{ "igorlfs/nvim-dap-view", opts = {} },
+	{ "stevearc/conform.nvim", opts = {} },
 	{
 		"okuuva/auto-save.nvim",
 		version = "^1.0.0", -- see https://devhints.io/semver, alternatively use '*' to use the latest tagged release
@@ -157,15 +109,8 @@ require("lazy").setup({
 			"nvim-tree/nvim-web-devicons",
 		},
 	},
-	{
-		"christopher-francisco/tmux-status.nvim",
-		lazy = true,
-		opts = {},
-	},
-	{
-		"nvim-lualine/lualine.nvim",
-		opts = {},
-	},
+	{ "christopher-francisco/tmux-status.nvim", lazy = true, opts = {} },
+	{ "nvim-lualine/lualine.nvim", opts = {} },
 	{
 		"folke/trouble.nvim",
 		opts = {
@@ -183,4 +128,61 @@ require("lazy").setup({
 		cmd = "Trouble",
 	},
 	{ "petertriho/nvim-scrollbar" },
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {},
+	},
+	{
+		"nickjvandyke/opencode.nvim",
+		dependencies = {
+			{ "folke/snacks.nvim", optional = true, opts = { input = { enabled = true } } },
+		},
+		config = function()
+			vim.g.opencode_opts = {
+				port = 4080,
+				provider = {
+					enabled = "terminal",
+					terminal = {},
+				},
+			}
+
+			vim.o.autoread = true
+			vim.keymap.set("n", "<leader>ot", function()
+				require("opencode").toggle()
+			end, { desc = "Toggle embedded" })
+
+			vim.keymap.set("n", "<leader>oa", function()
+				require("opencode").ask()
+			end, { desc = "Ask opencode" })
+
+			vim.keymap.set("v", "<leader>oa", function()
+				require("opencode").ask("@this: ")
+			end, { desc = "Ask opencode about selection" })
+
+			vim.keymap.set({ "n", "x" }, "<C-x>", function()
+				require("opencode").select()
+			end, { desc = "Execute opencode action…" })
+		end,
+	},
+})
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	callback = function()
+		local pids = vim.fn.systemlist("lsof -ti:4080")
+
+		for _, pid in ipairs(pids) do
+			pid = tonumber(pid)
+			if pid then
+				-- try graceful kill
+				vim.loop.kill(pid, vim.loop.constants.SIGTERM)
+
+				-- force kill fallback
+				vim.defer_fn(function()
+					pcall(vim.loop.kill, pid, vim.loop.constants.SIGKILL)
+				end, 500)
+			end
+		end
+	end,
 })
